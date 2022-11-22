@@ -73,4 +73,46 @@ function detectWin(){
   let col = 0;
   let xs = 0;
   let os = 0;
-  for (let row = 0; row < 3; i++)
+  let winner = "";
+
+  for (let row = 0; row < 3; row++){
+    for (let col = 0; col < 3; col++){
+      if (boardValues[row][col] == "x"){
+        xs++;
+      }
+      if (boardValues[row][col] == "o"){
+        os++;
+      }
+    }
+    if (xs == 3){
+      winner = "x";
+      return true;
+    }
+    else return false;
+    if (os == 3){
+      winner = "o";
+      return true;
+    }
+    else return false;
+  }
+}
+
+function defenseCheckR(){
+  for (let row = 0; row < 3; row++){
+    for (let col = 0; col < 3; col++){
+      if (boardValues[row][col] == "x"){
+        xs++;
+      }
+      if (boardValues[row][col] == "o"){
+        os++;
+      }
+    }
+    if (xs == 2){
+      if (xs + os) {
+
+      }
+    }
+    else if (os == 2){
+    }
+  }
+}
