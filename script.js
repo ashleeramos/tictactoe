@@ -7,7 +7,11 @@ function makeBoard() {
       boardValues[row][col] = "_";
     }
   }
+  board[0][0] = "x";
+  board[0][1] = "x";
+  board[0][2] = "x";
   showBoard();
+  if (detectWin()) alert(winner);
 }
 
 function showBoard() {
@@ -98,6 +102,9 @@ function detectWin(){
 }
 
 function defenseCheckR(){
+  let xs = 0;
+  let os = 0;
+
   for (let row = 0; row < 3; row++){
     for (let col = 0; col < 3; col++){
       if (boardValues[row][col] == "x"){
@@ -108,11 +115,17 @@ function defenseCheckR(){
       }
     }
     if (xs == 2){
-      if (xs + os) {
-
+      if (xs + os == 3){
+        row++;
       }
     }
     else if (os == 2){
+      if (xs + os == 3){
+        row++;
+      }
+    }
+    else {
+      fillGapH(row);
     }
   }
 }
