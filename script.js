@@ -1,4 +1,7 @@
 var boardValues = [];
+var winner = "";
+var fSlash = [2, 4, 6];
+var bSlash = [0, 4, 8];
 
 function makeBoard() {
   for (let row = 0; row < 3; row++) {
@@ -7,11 +10,11 @@ function makeBoard() {
       boardValues[row][col] = "_";
     }
   }
-  board[0][0] = "x";
-  board[0][1] = "x";
-  board[0][2] = "x";
+  boardValues[0][0] = "x";
+  boardValues[1][0] = "x";
+  boardValues[2][0] = "x";
   showBoard();
-  if (detectWin()) alert(winner);
+  if (detectWinC()) alert(winner);
 }
 
 function showBoard() {
@@ -25,14 +28,14 @@ function showBoard() {
   alert(board);
 }
 
-function newGame(){
+function newGame() {
   let gameOver = false;
   let goFirst = Math.floor(Math.random() * 2)
-  while (gameOver == false){
+  while (gameOver == false) {
     showBoard();
-    if (goFirst % 2 == 0){
-      if (cTurn() == true){
-        if (detectWin() == true){
+    if (goFirst % 2 == 0) {
+      if (cTurn() == true) {
+        if (detectWinR() == true) {
           winner = "cpu";
           gameOver = true;
         }
@@ -42,8 +45,8 @@ function newGame(){
       }
     }
     else {
-      if (uTurn() == true){
-        if (detectWin() == true){
+      if (uTurn() == true) {
+        if (detectWinR() == true) {
           winner = "user";
           gameOver = true;
         }
@@ -57,43 +60,54 @@ function newGame(){
   playAgain();
 }
 
-function uTurn(){
+function uTurn() {
   let row = prompt("enter row");
   let col = prompt("enter column");
-  alert (showBoard());
+  alert(showBoard());
   return;
 }
 
-function cTurn(){
-  if (defenseCheckR()) return true;
-  else if (defenseCheckC()) return true;
-  else if (defenseDiag()) return true;
-  else if (fillSpace()) return true;
-  else return false;
-}
-
-function detectWin(){
-  let row = 0;
-  let col = 0;
+function cTurn() {
   let xs = 0;
   let os = 0;
-  let winner = "";
+  if (defenseCheckR()) return true;
+  else if (defenseCheckC()) return true;
+  let flatBoard = boardValues.flat();
+  os = 0;
+  boardValues.forEach(defenseDiag(fSlash));
+  if (os > 1) alert("deal with a fSlash diag threat");
+  os = 0;
+  boardValues.forEach(defenseDiag(bSlash));
+  if (os > 1) alert("deal with a bSlash diag threat");
+  else if (fillSpace()) return true;
+  else return false;
 
-  for (let row = 0; row < 3; row++){
-    for (let col = 0; col < 3; col++){
-      if (boardValues[row][col] == "x"){
+  function defenseDiag(slashIndex) {
+    if (flatBoard[slashIndex] == "o"){
+      os++;
+    }
+  }
+}
+
+function detectWinR() {
+  let xs = 0;
+  let os = 0;
+
+  for (let row = 0; row < 3; row++) {
+    for (let col = 0; col < 3; col++) {
+      if (boardValues[row][col] == "x") {
         xs++;
       }
-      if (boardValues[row][col] == "o"){
+      if (boardValues[row][col] == "o") {
         os++;
       }
     }
-    if (xs == 3){
+    if (xs == 3) {
       winner = "x";
       return true;
     }
     else return false;
-    if (os == 3){
+    if (os == 3) {
       winner = "o";
       return true;
     }
@@ -101,31 +115,102 @@ function detectWin(){
   }
 }
 
-function defenseCheckR(){
+function detectWinC() {
   let xs = 0;
   let os = 0;
 
-  for (let row = 0; row < 3; row++){
-    for (let col = 0; col < 3; col++){
-      if (boardValues[row][col] == "x"){
+  for (let col = 0; col < 3; col++) {
+    for (let row = 0; row < 3; row++) {
+      if (boardValues[row][col] == "x") {
         xs++;
       }
-      if (boardValues[row][col] == "o"){
+      if (boardValues[row][col] == "o") {
         os++;
       }
     }
-    if (xs == 2){
-      if (xs + os == 3){
-        row++;
+    if (xs == 3) {
+      winner = "x";
+      return true;
+    }
+    else return false;
+    if (os == 3) {
+      winner = "o";
+      return true;
+    }
+    else return false;
+  }
+}
+
+function defenseCheckR() {
+  let xs = 0;
+  let os = 0;
+  for (let row = 0; row < 3; row++) {
+    for (let col = 0; col < 3; col++) {
+      if (boardValues[row][col] == "x") {
+        xs++;
+      }
+      if (boardValues[row][col] == "o") {
+        os++;
       }
     }
-    else if (os == 2){
-      if (xs + os == 3){
+    if (xs == 2 && os == 2) {
+      if (xs + os == 3) {
         row++;
       }
+      else {
+        fillGapH(row);
+      }
+    }
+  }
+  return true;
+}
+
+function defenseCheckC() {
+  let xs = 0;
+  let os = 0;
+
+  for (let col = 0; col < 3; col++) {
+    for (let row = 0; row < 3; row++) {
+      if (boardValues[row][col] == "x") {
+        xs++;, index, 
+      }
+      if (boardValues[row][col] == "o") {
+        os++;
+      }
+    }
+    if (xs == 2 && os == 2) {
+      if (xs + os == 3) {
+        col++;
+      }
+      else {
+        fillGapV(col);
+      }
+    }
+  }
+  return true;
+}
+
+function fillGapH(row) {
+  if (col < 3) {
+    if (boardValues[row][col] == "_") {
+      boardValues[row][col] = "o";
     }
     else {
-      fillGapH(row);
+      col++;
+      fillGapH();
     }
   }
 }
+
+function fillGapV(col) {
+  if (row < 3) {
+    if (boardValues[row][col] == "_") {
+      boardValues[row][col] = "o";
+    }
+    else {
+      row++;
+      fillGapH();
+    }
+  }
+}
+
