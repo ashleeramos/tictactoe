@@ -81,7 +81,7 @@ function cTurn() {
   if (os > 1) alert("deal with a bSlash diag threat");
   else if (fillSpace()) return true;
   else return false;
-
+// end of cTurn function definition.  Below are component functions
   function defenseDiag(slashIndex) {
     if (flatBoard[slashIndex] == "o"){
       os++;
@@ -92,7 +92,6 @@ function cTurn() {
 function detectWinR() {
   let xs = 0;
   let os = 0;
-
   for (let row = 0; row < 3; row++) {
     for (let col = 0; col < 3; col++) {
       if (boardValues[row][col] == "x") {
@@ -213,4 +212,3 @@ function fillGapV(col) {
     }
   }
 }
-
