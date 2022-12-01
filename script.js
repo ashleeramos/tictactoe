@@ -10,11 +10,7 @@ function makeBoard() {
       boardValues[row][col] = "_";
     }
   }
-  boardValues[0][0] = "x";
-  boardValues[1][0] = "x";
-  boardValues[2][0] = "x";
   showBoard();
-  if (detectWinC()) alert(winner);
 }
 
 function showBoard() {
@@ -35,7 +31,7 @@ function newGame() {
     showBoard();
     if (goFirst % 2 == 0) {
       if (cTurn() == true) {
-        if (detectWinR() == true) {
+        if (detectWinR() == showBoard()) {
           winner = "cpu";
           gameOver = true;
         }
@@ -68,25 +64,11 @@ function uTurn() {
 }
 
 function cTurn() {
-  let xs = 0;
-  let os = 0;
   if (defenseCheckR()) return true;
   else if (defenseCheckC()) return true;
-  let flatBoard = boardValues.flat();
-  os = 0;
-  boardValues.forEach(defenseDiag(fSlash));
-  if (os > 1) alert("deal with a fSlash diag threat");
-  os = 0;
-  boardValues.forEach(defenseDiag(bSlash));
-  if (os > 1) alert("deal with a bSlash diag threat");
+  else if (defenseDiag()) return true;
   else if (fillSpace()) return true;
   else return false;
-// end of cTurn function definition.  Below are component functions
-  function defenseDiag(slashIndex) {
-    if (flatBoard[slashIndex] == "o"){
-      os++;
-    }
-  }
 }
 
 function detectWinR() {
@@ -171,7 +153,7 @@ function defenseCheckC() {
   for (let col = 0; col < 3; col++) {
     for (let row = 0; row < 3; row++) {
       if (boardValues[row][col] == "x") {
-        xs++;, index, 
+        xs++;
       }
       if (boardValues[row][col] == "o") {
         os++;
@@ -187,6 +169,33 @@ function defenseCheckC() {
     }
   }
   return true;
+}
+
+function defenseDiag(slashIndex) {
+  let xs = 0;
+  let os = 0;
+  let flatBoard = boardValues.flat();
+  boardValues.forEach(defenseDiag(fSlash));
+  if (os > 1);
+  os = 0;
+  boardValues.forEach(defenseDiag(bSlash));
+  if (os > 1);
+  os = 0;
+  if (flatBoard[slashIndex] == "x") {
+    xs++;
+  }
+  else if (flatBoard[slashIndex] == "o") {
+    os++;
+  }
+  else {
+    slashIndex++;
+    defenseDiag(slashIndex);
+  }
+  if (xs == 2 && os == 2) {
+    if (xs + os == 3) {
+      fillGapD(slashIndex);
+    }
+  }
 }
 
 function fillGapH(row) {
@@ -212,3 +221,12 @@ function fillGapV(col) {
     }
   }
 }
+
+/* function fillGapD(slashIndex) {
+  boardValues.forEach(defenseDiag(fSlash));
+  if (os > 1);
+  os = 0;
+  boardValues.forEach(defenseDiag(bSlash));
+  if (os > 1);
+  os = 0;
+} */
