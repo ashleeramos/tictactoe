@@ -11,6 +11,7 @@ function makeBoard() {
     }
   }
   showBoard();
+  uTurn();
 }
 
 function showBoard() {
@@ -26,7 +27,7 @@ function showBoard() {
 
 function newGame() {
   let gameOver = false;
-  let goFirst = Math.floor(Math.random() * 2)
+  let goFirst = Math.floor(Math.random() * 2);
   while (gameOver == false) {
     showBoard();
     if (goFirst % 2 == 0) {
@@ -59,6 +60,7 @@ function newGame() {
 function uTurn() {
   let row = prompt("enter row");
   let col = prompt("enter column");
+  boardValues[row][col] = "x";
   alert(showBoard());
   return;
 }
@@ -72,24 +74,24 @@ function cTurn() {
 }
 
 function detectWinR() {
-  let xs = 0;
   let os = 0;
+  let xs = 0;
   for (let row = 0; row < 3; row++) {
     for (let col = 0; col < 3; col++) {
-      if (boardValues[row][col] == "x") {
-        xs++;
-      }
       if (boardValues[row][col] == "o") {
         os++;
       }
+      if (boardValues[row][col] == "x") {
+        xs++;
+      }
     }
-    if (xs == 3) {
-      winner = "x";
+    if (os == 3) {
+      winner = "o";
       return true;
     }
     else return false;
-    if (os == 3) {
-      winner = "o";
+    if (xs == 3) {
+      winner = "x";
       return true;
     }
     else return false;
@@ -97,20 +99,19 @@ function detectWinR() {
 }
 
 function detectWinC() {
-  let xs = 0;
   let os = 0;
-
+  let xs = 0;
   for (let col = 0; col < 3; col++) {
     for (let row = 0; row < 3; row++) {
-      if (boardValues[row][col] == "x") {
-        xs++;
-      }
       if (boardValues[row][col] == "o") {
         os++;
       }
+      if (boardValues[row][col] == "x") {
+        xs++;
+      }
     }
-    if (xs == 3) {
-      winner = "x";
+    if (os == 3) {
+      winner = "o";
       return true;
     }
     else return false;
@@ -123,19 +124,19 @@ function detectWinC() {
 }
 
 function defenseCheckR() {
-  let xs = 0;
   let os = 0;
+  let xs = 0;
   for (let row = 0; row < 3; row++) {
     for (let col = 0; col < 3; col++) {
-      if (boardValues[row][col] == "x") {
-        xs++;
-      }
       if (boardValues[row][col] == "o") {
         os++;
       }
+      if (boardValues[row][col] == "x") {
+        xs++;
+      }
     }
-    if (xs == 2 && os == 2) {
-      if (xs + os == 3) {
+    if (os == 2 && xs == 2) {
+      if (os + xs == 3) {
         row++;
       }
       else {
@@ -149,18 +150,17 @@ function defenseCheckR() {
 function defenseCheckC() {
   let xs = 0;
   let os = 0;
-
   for (let col = 0; col < 3; col++) {
     for (let row = 0; row < 3; row++) {
-      if (boardValues[row][col] == "x") {
-        xs++;
-      }
       if (boardValues[row][col] == "o") {
         os++;
       }
+      if (boardValues[row][col] == "x") {
+        xs++;
+      }
     }
-    if (xs == 2 && os == 2) {
-      if (xs + os == 3) {
+    if (os == 2 && xs == 2) {
+      if (os + xs == 3) {
         col++;
       }
       else {
@@ -172,8 +172,8 @@ function defenseCheckC() {
 }
 
 function defenseDiag(slashIndex) {
-  let xs = 0;
   let os = 0;
+  let xs = 0;
   let flatBoard = boardValues.flat();
   boardValues.forEach(defenseDiag(fSlash));
   if (os > 1);
@@ -181,18 +181,18 @@ function defenseDiag(slashIndex) {
   boardValues.forEach(defenseDiag(bSlash));
   if (os > 1);
   os = 0;
-  if (flatBoard[slashIndex] == "x") {
-    xs++;
-  }
-  else if (flatBoard[slashIndex] == "o") {
+  if (flatBoard[slashIndex] == "o") {
     os++;
+  }
+  else if (flatBoard[slashIndex] == "x") {
+    xs++;
   }
   else {
     slashIndex++;
     defenseDiag(slashIndex);
   }
-  if (xs == 2 && os == 2) {
-    if (xs + os == 3) {
+  if (os == 2 && xs == 2) {
+    if (os + xs == 3) {
       fillGapD(slashIndex);
     }
   }
@@ -222,11 +222,6 @@ function fillGapV(col) {
   }
 }
 
-/* function fillGapD(slashIndex) {
-  boardValues.forEach(defenseDiag(fSlash));
-  if (os > 1);
-  os = 0;
-  boardValues.forEach(defenseDiag(bSlash));
-  if (os > 1);
-  os = 0;
-} */
+function fillGapD(slashIndex) {
+
+}
