@@ -191,11 +191,6 @@ function defenseDiag(slashIndex) {
     slashIndex++;
     defenseDiag(slashIndex);
   }
-  if (os == 2 && xs == 2) {
-    if (os + xs == 3) {
-      fillGapD(slashIndex);
-    }
-  }
 }
 
 function fillGapH(row) {
@@ -223,5 +218,31 @@ function fillGapV(col) {
 }
 
 function fillGapD(slashIndex) {
+  boardValues.forEach(defenseDiag(fSlash));
+  if (os > 1);
+  os = 0;
+  boardValues.forEach(defenseDiag(bSlash));
+  if (os > 1);
+  os = 0;
+  if (flatBoard[slashIndex] == "_") {
+    flatBoard[slashIndex] = "o";
+  }
+  else {
+    row++
+    fillGapD(slashIndex);
+  }
+}
 
+function fillSpace() {
+  let blanks = [];
+  for (let col = 0; col < 3; col++) {
+    for (let row = 0; row < 3; row++) {
+      if (boardValues[row][col] == "_") {
+        blanks.push(boardValues[row][col]);
+      }
+    }
+  }
+  if (blanks == 0) {
+    let which = Math.floor(Math.random(blanks.length));
+  }
 }
