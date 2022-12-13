@@ -10,6 +10,9 @@ function makeBoard() {
       boardValues[row][col] = "_";
     }
   }
+  boardValues[0][0] = "x";
+  boardValues[1][0] = "x";
+  boardValues[2][0] = "x";
   showBoard();
   newGame();
 }
@@ -30,14 +33,12 @@ function newGame() {
   let goFirst = Math.floor(Math.random() * 2);
   while (gameOver == false) {
     if (goFirst % 2 == 0) {
-      alert("cpu goes first");
-      cTurn();
       if (cTurn() == true) {
-        if (detectWinR() == showBoard()) {
+        if (detectWinR() == true) {
           winner = "cpu";
           gameOver = true;
         }
-        else if (detectWinC() == showBoard()) {
+        else if (detectWinC() == true) {
           winner = "cpu";
           gameOver = true;
         }
@@ -46,9 +47,7 @@ function newGame() {
         }
       }
     }
-    else {
-      alert("user goes first");
-      uTurn();
+    else if (goFirst % 2 > 0) {
       if (uTurn() == true) {
         if (detectWinR() == true) {
           winner = "user";
@@ -64,27 +63,27 @@ function newGame() {
       }
     }
     goFirst++;
-
   }
-  alert(winner + "wins")
-  playAgain();
+  alert(winner + " wins")
+  // playAgain();
 }
 
 function uTurn() {
+  alert("uTurn");
   let row = parseInt(prompt("enter row"));
   let col = parseInt(prompt("enter column"));
   boardValues[row][col] = "x";
-  alert(showBoard());
-  return;
+  showBoard();
+  return true;
 }
 
 function cTurn() {
+  alert("cTurn");
   if (defenseCheckR()) return true;
   else if (defenseCheckC()) return true;
   else if (defenseDiag()) return true;
   else if (randomMove()) return true;
   else return false;
-  showBoard();
 }
 
 function defenseCheckR() {
@@ -96,6 +95,10 @@ function defenseCheckC() {
 }
 
 function defenseDiag() {
+  return false;
+}
+
+function detectWinCol(){
   return false;
 }
 
@@ -137,10 +140,12 @@ function detectWinC() {
     }
     if (os == 3) {
       winner = "o";
+      alert(winner + " won");
       return true;
     }
     if (xs == 3) {
-      winner = "o";
+      winner = "x";
+      alert(winner + " won");
       return true;
     }
     else return false;
@@ -262,6 +267,7 @@ function randomMove() {
   for (let col = 0; col < 3; col++) {
     for (let row = 0; row < 3; row++) {
       if (boardValues[row][col] == "_") {
+        // alert(row + "," + col);
         blanks.push([row, col]);
       }
     }
