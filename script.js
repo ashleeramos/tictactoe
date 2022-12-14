@@ -10,9 +10,6 @@ function makeBoard() {
       boardValues[row][col] = "_";
     }
   }
-  boardValues[0][0] = "x";
-  boardValues[1][0] = "x";
-  boardValues[2][0] = "x";
   showBoard();
   newGame();
 }
@@ -32,6 +29,7 @@ function newGame() {
   let gameOver = false;
   let goFirst = Math.floor(Math.random() * 2);
   while (gameOver == false) {
+    showBoard();
     if (goFirst % 2 == 0) {
       if (cTurn() == true) {
         if (detectWinR() == true) {
@@ -57,9 +55,10 @@ function newGame() {
           winner = "user";
           gameOver = true;
         }
-        else {
-          winner = "nobody";
-        }
+      }
+      else {
+        winner = "nobody";
+        break;
       }
     }
     goFirst++;
@@ -72,9 +71,13 @@ function uTurn() {
   alert("uTurn");
   let row = parseInt(prompt("enter row"));
   let col = parseInt(prompt("enter column"));
-  boardValues[row][col] = "x";
-  showBoard();
-  return true;
+  if (row > 2) {
+    return false;
+  }
+  else {
+    boardValues[row][col] = "x";
+    return true;
+  }
 }
 
 function cTurn() {
@@ -83,12 +86,11 @@ function cTurn() {
   else if (defenseCheckC()) return true;
   else if (defenseDiag()) return true;
   else if (randomMove()) return true;
-  else return false;
 }
 
-function defenseCheckR() {
+/* function defenseCheckR() {
   return false;
-}
+} */
 
 function defenseCheckC() {
   return false;
@@ -98,7 +100,7 @@ function defenseDiag() {
   return false;
 }
 
-function detectWinCol(){
+function detectWinCol() {
   return false;
 }
 
@@ -152,7 +154,7 @@ function detectWinC() {
   }
 }
 
-/* function defenseCheckR() {
+function defenseCheckR() {
   let os = 0;
   let xs = 0;
   for (let row = 0; row < 3; row++) {
@@ -164,19 +166,20 @@ function detectWinC() {
         xs++;
       }
     }
-    if (os == 2 && xs == 2) {
+    if (os == 2 || xs == 2) {
       if (os + xs == 3) {
         row++;
       }
       else {
         fillGapH(row);
+        return true;
       }
     }
   }
-  return true;
+  return false;
 }
 
-function defenseCheckC() {
+/* function defenseCheckC() {
   let xs = 0;
   let os = 0;
   for (let col = 0; col < 3; col++) {
@@ -188,12 +191,13 @@ function defenseCheckC() {
         xs++;
       }
     }
-    if (os == 2 && xs == 2) {
+    if (os == 2 || xs == 2) {
       if (os + xs == 3) {
         col++;
       }
       else {
         fillGapV(col);
+        return true;
       }
     }
   }
@@ -219,33 +223,33 @@ function defenseDiag(slashIndex) {
     slashIndex++;
     defenseDiag(slashIndex);
   }
-}
+} */
 
 function fillGapH(row) {
-  if (col < 3) {
+  let col = 0;
+  while (col < 3) {
     if (boardValues[row][col] == "_") {
       boardValues[row][col] = "o";
     }
     else {
       col++;
-      fillGapH();
     }
   }
 }
 
 function fillGapV(col) {
-  if (row < 3) {
+  let row = 0;
+  while (row < 3) {
     if (boardValues[row][col] == "_") {
       boardValues[row][col] = "o";
     }
     else {
       row++;
-      fillGapV();
     }
   }
 }
 
-function fillGapD(slashIndex) {
+/* function fillGapD(slashIndex) {
   let os = 0;
   boardValues.forEach(defenseDiag(fSlash));
   if (os > 1);
