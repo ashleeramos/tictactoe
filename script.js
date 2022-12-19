@@ -199,31 +199,32 @@ function defenseCheckC() {
   return false;
 }
 
-function defenseDiag(slashItems) {
+function defenseDiag(items) {
   let flatBoard = boardValues.flat();
   let xs = 0;
   let open = -1;
-  let slashItem = -1;
-  slashItems.forEach(defenseDiagForEach);
+  items.forEach(defenseDiagForEach);
   if (xs == 2 && open > -1) {
-    fillGapD(slashItem);
+    fillGapD(open);
+    return open;
   }
   else {
     return false;
   }
-  function defenseDiagForEach(slashItem) {
-    if (flatBoard[slashItem] == "x") {
+  function defenseDiagForEach(item, index, arr) {
+    if (flatBoard[item] == "x") {
       xs++;
-      console.log(boardDict[slashItem]);
+      console.log("x at " + boardDict[item] + " at " + index + " in " + arr);
     }
-    else if (flatBoard[slashItem] == "_") {
-      open = slashItem;
+    else if (flatBoard[item] == "_") {
+      open = item;
+      console.log("_ at " + boardDict[item] + " at " + index + " in " + arr);
     }
   }
-  function fillGapD(slashItem) {
-    let toFill = boardDict[slashItem];
-    boardValues[toFill[0]][toFill[1]] = "x";
-    return true;
+  function fillGapD(item) {
+    let toFill = boardDict[item];
+    boardValues[toFill[0]][toFill[1]] = "o";
+    console.log("o at " + toFill);
   }
 }
 
