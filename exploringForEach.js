@@ -7,6 +7,8 @@ alert("Defense Diag fSlash: ", defenseDiag(fSlash));
 alert("Defense Diag bSlash: ", defenseDiag(bSlash));
 
 
+
+
 function defenseDiag(items) {
   let flatBoard = boardValues.flat();
   let xs = 0;
