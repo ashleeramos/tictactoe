@@ -29,23 +29,26 @@ function showBoard() {
 function newGame() {
   let turn = 0;
   let go = Math.floor(Math.random() * 2);
+  if (go % 2 == 0) {
+    turn++;
+  }
   while (gameOver == false) {
     showBoard();
-    if (go % 2 == 0) {
-      turn++;
+    if (turn % 2 == 0) {
+      // alert("turn " + turn + " is cTurn");
       if (cTurn() == true) {
         detectWin("cpu");
+        turn++;
       }
-      go++;
-      alert(turn + " cTurn");
+      else break;
     }
-    else if (go % 2 > 0) {
-      turn++;
+    else {
+      // alert("turn " + turn + " is uTurn");
       if (uTurn() == true) {
         detectWin("user");
+        turn++;
       }
-      go++;
-      alert(turn + " uTurn");
+      else break;
     }
     // new turn
   }
@@ -98,11 +101,13 @@ function cTurn() {
   else if (defenseDiag(fSlash)) return true;
   else if (defenseDiag(bSlash)) return true;
   else if (randomMove()) return true;
+  else alert("no moves");
 }
 
 function detectWinR() {
   let os = 0;
   let xs = 0;
+  let winFlag = false;
   for (let row = 0; row < 3; row++) {
     os = 0;
     xs = 0;
@@ -116,11 +121,11 @@ function detectWinR() {
     }
     if (os == 3) {
       // winner = "o";
-      return true;
+      winFlag = true;
     }
     else if (xs == 3) {
       // winner = "x";
-      return true;
+      winFlag = true;
     }
     else return false;
   }
@@ -143,12 +148,10 @@ function detectWinC() {
     }
     if (os == 3) {
       // winner = "o";
-      alert("winner column");
       winFlag = true;
     }
     else if (xs == 3) {
       // winner = "x";
-      alert("winner column");
       winFlag = true;
     }
   }
