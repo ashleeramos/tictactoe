@@ -12,7 +12,6 @@ function makeBoard() {
       boardValues[row][col] = "_";
     }
   }
-  newGame();
 }
 
 function showBoard() {
@@ -27,6 +26,7 @@ function showBoard() {
 }
 
 function newGame() {
+  makeBoard();
   let turn = 0;
   let go = Math.floor(Math.random() * 2);
   if (go % 2 == 0) {
@@ -53,7 +53,7 @@ function newGame() {
     // new turn
   }
   alert(winner + " wins");
-  // playAgain();
+  playAgain();
 }
 
 function detectWin(player) {
@@ -91,6 +91,8 @@ function uTurn() {
   }
   else {
     boardValues[row][col] = "x";
+    console.log(row + "," + col + "= x");
+    
     return true;
   }
 }
@@ -127,7 +129,7 @@ function detectWinR() {
       // winner = "x";
       winFlag = true;
     }
-    else return false;
+    else return winFlag;
   }
 }
 
@@ -176,10 +178,12 @@ function defenseCheckR() {
       }
       else {
         fillGapH(row);
+        alert("row defense");
         return true;
       }
     }
   }
+  alert("no row defense");
   return false;
 }
 
@@ -201,10 +205,12 @@ function defenseCheckC() {
       }
       else {
         fillGapV(col);
+        alert("column defense");
         return true;
       }
     }
   }
+  alert("no column defense");
   return false;
 }
 
@@ -237,6 +243,7 @@ function defenseDiag(items) {
   function fillGapD(item) {
     let toFill = boardDict[item];
     boardValues[toFill[0]][toFill[1]] = "o";
+          console.log(toFill[0] + "," +toFill[1] + "= o");
     // console.log("o at " + toFill);
   }
 }
@@ -266,6 +273,8 @@ function fillGapH(row) {
   while (col < 3) {
     if (boardValues[row][col] == "_") {
       boardValues[row][col] = "o";
+      console.log(row + "," + col + "= o");
+      col = 3;
     }
     else {
       col++;
@@ -278,6 +287,8 @@ function fillGapV(col) {
   while (row < 3) {
     if (boardValues[row][col] == "_") {
       boardValues[row][col] = "o";
+            console.log(row + "," + col + "= o");
+      row = 3;
     }
     else {
       row++;
@@ -303,13 +314,14 @@ function randomMove() {
     let row = blanks[which][0];
     let col = blanks[which][1];
     boardValues[row][col] = "o";
+          console.log(row + "," + col + "= o");
     return true;
   }
 }
 
 function playAgain() {
-  let again = prompt("would you like to play again (yes or no)?");
-  if (again = "yes") {
+  let again = confirm("would you like to play again (yes or no)?");
+  if (again == true) {
     newGame();
   }
   else return "thanks for playing tic-tac-toe!";
