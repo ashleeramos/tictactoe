@@ -4,6 +4,7 @@ var fSlash = [2, 4, 6];
 var bSlash = [0, 4, 8];
 var boardDict = [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]];
 var gameOver = false;
+var gameLog = [];
 
 function makeBoard() {
   for (let row = 0; row < 3; row++) {
@@ -87,12 +88,12 @@ function uTurn() {
   let row = parseInt(prompt("enter row"));
   let col = parseInt(prompt("enter column"));
   if (row > 2) {
+    alert(JSON.stringify(gameLog));
     return false;
   }
   else {
     boardValues[row][col] = "x";
-    console.log(row + "," + col + "= x");
-    
+    gameLog.push(row + "," + col + "= x");
     return true;
   }
 }
@@ -172,7 +173,17 @@ function defenseCheckR() {
         xs++;
       }
     }
-    if (os == 2 || xs == 2) {
+    if (os == 2) {
+      if (os + xs == 3) {
+        row++;
+      }
+      else {
+        fillGapH(row);
+        alert("cpu wins");
+        return true;
+      }
+    }
+    if (xs == 2) {
       if (os + xs == 3) {
         row++;
       }
@@ -182,8 +193,9 @@ function defenseCheckR() {
         return true;
       }
     }
+    os = 0;
+    xs = 0;
   }
-  alert("no row defense");
   return false;
 }
 
@@ -209,8 +221,9 @@ function defenseCheckC() {
         return true;
       }
     }
+    os = 0;
+    xs = 0;
   }
-  alert("no column defense");
   return false;
 }
 
@@ -230,21 +243,21 @@ function defenseDiag(items) {
   function defenseDiagForEach(item, index, arr) {
     if (flatBoard[item] == "x") {
       xs++;
-      // console.log("x at " + boardDict[item] + " at " + index + " in " + arr);
+      // gameLog.push("x at " + boardDict[item] + " at " + index + " in " + arr);
     }
     else if (flatBoard[item] == "o") {
       os++;
     }
     else if (flatBoard[item] == "_") {
       open = item;
-      // console.log("_ at " + boardDict[item] + " at " + index + " in " + arr);
+      // gameLog.push("_ at " + boardDict[item] + " at " + index + " in " + arr);
     }
   }
   function fillGapD(item) {
     let toFill = boardDict[item];
     boardValues[toFill[0]][toFill[1]] = "o";
-          console.log(toFill[0] + "," +toFill[1] + "= o");
-    // console.log("o at " + toFill);
+    gameLog.push(toFill[0] + "," + toFill[1] + "= o");
+    // gameLog.push("o at " + toFill);
   }
 }
 
@@ -273,7 +286,7 @@ function fillGapH(row) {
   while (col < 3) {
     if (boardValues[row][col] == "_") {
       boardValues[row][col] = "o";
-      console.log(row + "," + col + "= o");
+      gameLog.push(row + "," + col + "= o");
       col = 3;
     }
     else {
@@ -287,7 +300,7 @@ function fillGapV(col) {
   while (row < 3) {
     if (boardValues[row][col] == "_") {
       boardValues[row][col] = "o";
-            console.log(row + "," + col + "= o");
+      gameLog.push(row + "," + col + "= o");
       row = 3;
     }
     else {
@@ -314,15 +327,17 @@ function randomMove() {
     let row = blanks[which][0];
     let col = blanks[which][1];
     boardValues[row][col] = "o";
-          console.log(row + "," + col + "= o");
+    gameLog.push(row + "," + col + "= o");
     return true;
   }
 }
 
 function playAgain() {
-  let again = confirm("would you like to play again (yes or no)?");
+  let again = confirm("would you like to play again?");
   if (again == true) {
+    gameOver = false;
+    alert(JSON.stringify(gameLog));
     newGame();
   }
-  else return "thanks for playing tic-tac-toe!";
+  else return false;
 }
