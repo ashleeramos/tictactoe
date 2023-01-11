@@ -53,27 +53,29 @@ function newGame() {
     }
     // new turn
   }
-  alert(winner + " wins");
+  showBoard();
   playAgain();
 }
 
 function detectWin(player) {
   if (detectWinR() == true) {
     winner = player;
+    alert(winner + " wins");
     gameOver = true;
   }
   else if (detectWinC() == true) {
     winner = player;
+    alert(winner + " wins");
     gameOver = true;
   }
   else if (detectWinD(fSlash) == true) {
     winner = player;
-    // alert("fSlash won");
+    alert(winner + " wins");
     gameOver = true;
   }
   else if (detectWinD(bSlash) == true) {
     winner = player;
-    // alert("bSlash won");
+    alert(winner + " wins");
     gameOver = true;
   }
   else {
@@ -179,7 +181,7 @@ function defenseCheckR() {
       }
       else {
         fillGapH(row);
-        alert("cpu wins");
+        alert("cpu wins defense check");
         return true;
       }
     }
@@ -200,8 +202,8 @@ function defenseCheckR() {
 }
 
 function defenseCheckC() {
-  let xs = 0;
   let os = 0;
+  let xs = 0;
   for (let col = 0; col < 3; col++) {
     for (let row = 0; row < 3; row++) {
       if (boardValues[row][col] == "o") {
@@ -211,7 +213,17 @@ function defenseCheckC() {
         xs++;
       }
     }
-    if (os == 2 || xs == 2) {
+    if (os == 2) {
+      if (os + xs == 3) {
+        col++;
+      }
+      else {
+        fillGapV(col);
+        alert("cpu wins defense check");
+        return true;
+      }
+    }
+    if (xs == 2) {
       if (os + xs == 3) {
         col++;
       }
