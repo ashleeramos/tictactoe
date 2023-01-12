@@ -84,8 +84,6 @@ function detectWin(player) {
   return gameOver;
 }
 
-
-
 function uTurn() {
   let row = parseInt(prompt("enter row"));
   let col = parseInt(prompt("enter column"));
@@ -101,7 +99,7 @@ function uTurn() {
 }
 
 function cTurn() {
-  if (defenseCheckR()) return true;
+  if (defenseCheckRDetect()) return true;
   else if (defenseCheckC()) return true;
   else if (defenseDiag(fSlash)) return true;
   else if (defenseDiag(bSlash)) return true;
@@ -163,7 +161,52 @@ function detectWinC() {
   return winFlag;
 }
 
-function defenseCheckR() {
+function defenseCheckRDetect() {
+  let os = 0;
+  let xs = 0;
+  let defenseData = [];
+  for (let row = 0; row < 3; row++) {
+    for (let col = 0; col < 3; col++) {
+      if (boardValues[row][col] == "o") {
+        os++;
+      }
+      if (boardValues[row][col] == "x") {
+        xs++;
+      }
+    }
+    if (os == 2 && xs == 0) {
+      defenseData.push(["win", row]);
+    }
+    else if (os == 0 && xs == 2) {
+      defenseData.push(["block", row]);
+    }
+    os = 0;
+    xs = 0;
+  }
+  if (defenseData.length > 0) {
+    return defenseCheckRDecide(defenseData);
+  }
+  else return false;
+}
+
+function defenseCheckRDecide(items) {
+  items.forEach(defenseCheckRAct);
+  return true;
+}
+function defenseCheckRAct(item, index, arr) {
+  if (item[0] == "win") {
+    fillGapH(item[1]);
+    alert("cpu wins defense check");
+  }
+  else if (item[0] == "block") {
+    fillGapH(item[1]);
+    alert("row defense");
+  }
+}
+
+
+
+function defenseCheckROld() {
   let os = 0;
   let xs = 0;
   for (let row = 0; row < 3; row++) {
