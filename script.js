@@ -5,6 +5,7 @@ var bSlash = [0, 4, 8];
 var boardDict = [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]];
 var gameOver = false;
 var gameLog = [];
+var boardPrompt = "        0     1     2\n  0            \n  1            \n  2            \n\n";
 
 function makeBoard() {
   for (let row = 0; row < 3; row++) {
@@ -85,8 +86,8 @@ function detectWin(player) {
 }
 
 function uTurn() {
-  let row = parseInt(prompt("enter row"));
-  let col = parseInt(prompt("enter column"));
+  let row = parseInt(prompt(boardPrompt + "enter row"));
+  let col = parseInt(prompt(boardPrompt + "enter column"));
   if (row > 2) {
     alert(JSON.stringify(gameLog));
     return false;
@@ -100,7 +101,7 @@ function uTurn() {
 
 function cTurn() {
   if (defenseCheckRDetect()) return true;
-  else if (defenseCheckC()) return true;
+  else if (defenseCheckCDetect()) return true;
   else if (defenseDiag(fSlash)) return true;
   else if (defenseDiag(bSlash)) return true;
   else if (randomMove()) return true;
@@ -123,11 +124,9 @@ function detectWinR() {
       }
     }
     if (os == 3) {
-      // winner = "o";
       winFlag = true;
     }
     else if (xs == 3) {
-      // winner = "x";
       winFlag = true;
     }
     else return winFlag;
@@ -150,16 +149,14 @@ function detectWinC() {
       }
     }
     if (os == 3) {
-      // winner = "o";
       winFlag = true;
     }
     else if (xs == 3) {
-      // winner = "x";
       winFlag = true;
     }
   }
   return winFlag;
-}
+}prompt
 
 function defenseCheckRDetect() {
   let os = 0;
@@ -204,9 +201,7 @@ function defenseCheckRAct(item, index, arr) {
   }
 }
 
-
-
-function defenseCheckROld() {
+/* function defenseCheckROld() {
   let os = 0;
   let xs = 0;
   for (let row = 0; row < 3; row++) {
@@ -242,9 +237,52 @@ function defenseCheckROld() {
     xs = 0;
   }
   return false;
+} */
+
+function defenseCheckCDetect() {
+  let os = 0;
+  let xs = 0;
+  let defenseData = [];
+  for (let col = 0; col < 3; col++) {
+    for (let row = 0; row < 3; row++) {
+      if (boardValues[row][col] == "o") {
+        os++;
+      }
+      if (boardValues[row][col] == "x") {
+        xs++;
+      }
+    }
+    if (os == 2 && xs == 0) {
+      defenseData.push(["win", col]);
+    }
+    else if (os == 0 && xs == 2) {
+      defenseData.push(["block", col]);
+    }
+    os = 0;
+    xs = 0;
+  }
+  if (defenseData.length > 0) {
+    return defenseCheckCDecide(defenseData);
+  }
+  else return false;
 }
 
-function defenseCheckC() {
+function defenseCheckCDecide(items) {
+  items.forEach(defenseCheckCAct);
+  return true;
+}
+function defenseCheckCAct(item, index, arr) {
+  if (item[0] == "win") {
+    fillGapV(item[1]);
+    alert("cpu wins defense check");
+  }
+  else if (item[0] == "block") {
+    fillGapV(item[1]);
+    alert("column defense");
+  }
+}
+
+/* function defenseCheckCOld() {
   let os = 0;
   let xs = 0;
   for (let col = 0; col < 3; col++) {
@@ -280,7 +318,7 @@ function defenseCheckC() {
     xs = 0;
   }
   return false;
-}
+} */
 
 function defenseDiag(items) {
   let flatBoard = boardValues.flat();
@@ -369,7 +407,6 @@ function randomMove() {
   for (let col = 0; col < 3; col++) {
     for (let row = 0; row < 3; row++) {
       if (boardValues[row][col] == "_") {
-        // alert(row + "," + col);
         blanks.push([row, col]);
       }
     }
